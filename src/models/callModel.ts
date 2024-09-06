@@ -1,45 +1,50 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { config } from "dotenv";
+import { DataTypes, Model, Sequelize } from "sequelize";
+config({ path: "./.env" });
 const sequelize = new Sequelize(process.env.DB_URL as string);
 
 export class Call extends Model {
-    public id!: number;
-    public callerId!: number;
-    public receiverId!: number;
-    public type!: string; // e.g., 'audio' or 'video'
-    public status!: string; // e.g., 'initiated', 'accepted', 'rejected'
+  public id!: number;
+  public callerId!: number;
+  public receiverId!: number;
+  public type!: string; // e.g., 'audio' or 'video'
+  public status!: string; // e.g., 'initiated', 'accepted', 'rejected'
 }
 
-Call.init({
+Call.init(
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     callerId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Users',
-            key: 'id',
-        },
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+      allowNull: false,
     },
     receiverId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Users',
-            key: 'id',
-        },
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+      allowNull: false,
     },
     type: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     status: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-}, {
+  },
+  {
     sequelize,
-    modelName: 'Call',
-});
+    modelName: "Call",
+  }
+);

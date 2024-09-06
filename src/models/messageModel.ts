@@ -1,4 +1,6 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { config } from "dotenv";
+import { DataTypes, Model, Sequelize } from "sequelize";
+config({ path: "./.env" });
 const sequelize = new Sequelize(process.env.DB_URL as string);
 
 export class Message extends Model {
