@@ -22,7 +22,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("server is working fine");
+  res.send("server is working on the web page");
 });
 
 app.listen(port, () => {
