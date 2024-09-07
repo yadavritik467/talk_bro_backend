@@ -10,7 +10,7 @@ const port = process.env.PORT;
 
 const sequelize = new Sequelize(process.env.DB_URL as string, {
   dialect: "mysql",
-  logging: true,
+  logging: false,
   dialectOptions: {
     ssl: {
       require: true,
@@ -22,7 +22,7 @@ const sequelize = new Sequelize(process.env.DB_URL as string, {
 sequelize
 .sync({ force: true })
   .then(() => console.log("Database is connected"))
-  .catch((err: Error) => console.error("Database connection error:", err));  
+  .catch((err: Error) => console.error("Database connection error:", err));   
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));

@@ -3,7 +3,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 config({ path: "./.env" });
 const sequelize = new Sequelize(process.env.DB_URL as string, {
   dialect: "mysql",
-  logging: true,
+  logging: false,
 });
 
 export class User extends Model {
@@ -15,12 +15,6 @@ export class User extends Model {
 
 User.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      defaultValue: 1,
-    },
     name: {
       type: DataTypes.STRING(512),
       unique: false,
