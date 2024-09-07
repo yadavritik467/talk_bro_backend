@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon dist/index.js",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "rimraf dist && tsc -w"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +30,7 @@
     "@types/node": "^22.5.4",
     "@types/websocket": "^1.0.10",
     "nodemon": "^3.1.4",
+    "rimraf": "^6.0.1",
     "typescript": "^5.5.4"
   }
 }
