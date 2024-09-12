@@ -11,5 +11,6 @@
   "exclude": [
     "node_modules",
     "front"
-  ]
+  ],
+  "include": ["src/**/*.ts", "src/global.d.ts"]
 }

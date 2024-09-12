@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import querystring from "querystring";
 import { User } from "../models/userModel.js";
+import { Op } from "sequelize";
 
 interface UserType {
   name: string;
@@ -71,7 +72,6 @@ export const authGoogleCallback = async (
       );
       return res.redirect(`${process.env.FRONT_URL}/?token=${token}`);
     } else {
-      console.log("user", user);
       const newUser = await User.create({
         name: user?.name,
         picture: user?.picture,
@@ -107,7 +107,14 @@ export const myProfile = async (req: Request, res: Response) => {
 
 export const allUsers = async (req: Request, res: Response) => {
   try {
-    const allUser = await User.findAll();
+    const userId = req?.user?.id;
+    const allUser = await User.findAll({
+      where: {
+        id: {
+          [Op.ne]: userId,
+        },
+      },
+    });
     if (!allUser?.length) {
       return res.status(404).json({ message: "User not found" });
     }
