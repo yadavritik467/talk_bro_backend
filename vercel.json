@@ -1,11 +1,4 @@
 {
   "version": 2,
-  "name": "talk-bro-backend",
-  "builds": [
-    {
-      "src": "index.ts",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [{ "src": "/(.*)", "dest": "/dist/index.js" }]
 }
