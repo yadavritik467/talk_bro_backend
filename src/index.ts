@@ -2,8 +2,9 @@ import cors from "cors";
 import { config } from "dotenv";
 import express, { Request, Response } from "express";
 import http from "http";
-import { Sequelize, Error } from "sequelize";
+import { Error, Sequelize } from "sequelize";
 import { Server } from "socket.io";
+import msgRoutes from "./routes/message.js";
 import userRoutes from "./routes/user.js";
 config({ path: "./.env" });
 
@@ -31,6 +32,7 @@ const sequelize = new Sequelize(process.env.DB_URL as string, {
 });
 
 // Sync database
+
 sequelize
   .sync({ force: false })
   .then(() => console.log("Database is connected"))
@@ -43,14 +45,20 @@ app.use(cors());
 
 // Routes
 app.use("/", userRoutes);
+app.use("/", msgRoutes);
 
 // Socket.IO implementation
+let onlineUserIds: number[] = [];
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   // Handle user joining a personal chat room
   socket.on("joinRoom", ({ userId }) => {
     socket.join(`user_${userId}`); // Each user gets their own room
+    if (!onlineUserIds?.find((online) => online === userId)) {
+      onlineUserIds?.push(userId);
+    }
+    io.emit("usersOnline", onlineUserIds);
     console.log(`User ${userId} joined room user_${userId}`);
   });
 
@@ -59,15 +67,22 @@ io.on("connection", (socket) => {
     const { senderId, receiverId, content } = messageData;
     io.to(`user_${receiverId}`).emit("receiveMessage", {
       senderId,
+      receiverId,
       content,
     });
-    console.log(
-      `Message from user_${senderId} to user_${receiverId}: ${content}`
-    );
+    // console.log(
+    //   `Message from user_${senderId} to user_${receiverId}: ${content}`
+    // );
   });
   // handle typing
   socket.on("startTyping", (typingInfo) => {
     io.emit("receiveTyping", { typingInfo });
+  });
+  socket.on("userDisconnect", ({ userId }) => {
+    onlineUserIds = onlineUserIds?.filter((online) => online !== userId);
+    console.log('userId',userId)
+    console.log('offlineuser',onlineUserIds)
+    io.emit("usersOffline", onlineUserIds);
   });
 
   // Handle user disconnecting

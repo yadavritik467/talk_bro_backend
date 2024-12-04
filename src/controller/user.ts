@@ -70,6 +70,10 @@ export const authGoogleCallback = async (
           expiresIn: "365d",
         }
       );
+      if (isExistUser?.picture !== user?.picture) {
+        isExistUser.picture = user?.picture;
+        await isExistUser.save();
+      }
       return res.redirect(`${process.env.FRONT_URL}/?token=${token}`);
     } else {
       const newUser = await User.create({
@@ -109,11 +113,11 @@ export const allUsers = async (req: Request, res: Response) => {
   try {
     const userId = req?.user?.id;
     const allUser = await User.findAll({
-      where: {
-        id: {
-          [Op.ne]: userId,
-        },
-      },
+      // where: {
+      //   id: {
+      //     [Op.ne]: userId,
+      //   },
+      // },
     });
     if (!allUser?.length) {
       return res.status(404).json({ message: "User not found" });

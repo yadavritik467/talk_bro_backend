@@ -4,42 +4,57 @@ config({ path: "./.env" });
 const sequelize = new Sequelize(process.env.DB_URL as string);
 
 export class Message extends Model {
-    public id!: number;
-    public senderId!: number;
-    public groupId?: number;
-    public content!: string;
-    public mediaUrl?: string;
+  public id!: number;
+  public senderId!: number;
+  public groupId?: number;
+  public content!: string;
+  public mediaUrl?: string;
 }
 
-Message.init({
+Message.init(
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     senderId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Users',
-            key: 'id',
-        },
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+      allowNull: false,
+    },
+    receiverId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+      allowNull: false,
     },
     groupId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Groups',
-            key: 'id',
-        },
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Groups",
+        key: "id",
+      },
+      allowNull: true,
     },
     content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     mediaUrl: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
-}, {
+  },
+  {
     sequelize,
-    modelName: 'Message',
-});
+    modelName: "Message",
+    freezeTableName: true,
+    timestamps: true,
+  }
+);
