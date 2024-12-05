@@ -11,8 +11,8 @@ const userModel_js_1 = require("../models/userModel.js");
 // google authentication
 const authGoogle = async (req, res) => {
     try {
-        const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:4500/google/callback&scope=profile%20email`;
-        res.redirect(redirectUri);
+        const redirectUri = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${process.env.BACKEND_URL}/google/callback&scope=profile%20email`;
+        return res.redirect(redirectUri);
     }
     catch (error) {
         console.log("1", error.message);
