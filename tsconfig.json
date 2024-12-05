@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "rootDir": "src",
     "moduleResolution": "NodeNext",
-    "outDir": "dist",
+    "outDir": "public",
     "skipLibCheck": true,
     "strict": true,
   },
@@ -12,5 +12,8 @@
     "node_modules",
     "front"
   ],
-  "include": ["src/**/*.ts", "src/global.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/global.d.ts"
+  ]
 }

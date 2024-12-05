@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon dist/index.js",
-    "build": "rimraf dist && tsc",
-    "watch": "rimraf dist && tsc -w"
+    "start": "node public/index.js",
+    "dev": "nodemon public/index.js",
+    "build": "rimraf public && tsc",
+    "watch": "rimraf public && tsc -w"
   },
   "keywords": [],
   "author": "",
