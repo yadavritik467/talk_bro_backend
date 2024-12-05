@@ -80,8 +80,8 @@ io.on("connection", (socket) => {
   });
   socket.on("userDisconnect", ({ userId }) => {
     onlineUserIds = onlineUserIds?.filter((online) => online !== userId);
-    console.log('userId',userId)
-    console.log('offlineuser',onlineUserIds)
+    console.log("userId", userId);
+    console.log("offlineuser", onlineUserIds);
     io.emit("usersOffline", onlineUserIds);
   });
 
@@ -103,5 +103,3 @@ app.get("/", (req: Request, res: Response) => {
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-export default app;
