@@ -55,7 +55,6 @@ io.on("connection", (socket) => {
             onlineUserIds?.push(userId);
         }
         io.emit("usersOnline", onlineUserIds);
-        console.log(`User ${userId} joined room user_${userId}`);
     });
     // Handle new messages
     socket.on("sendMessage", (messageData) => {
@@ -65,9 +64,6 @@ io.on("connection", (socket) => {
             receiverId,
             content,
         });
-        // console.log(
-        //   `Message from user_${senderId} to user_${receiverId}: ${content}`
-        // );
     });
     // handle typing
     socket.on("startTyping", (typingInfo) => {
@@ -75,9 +71,29 @@ io.on("connection", (socket) => {
     });
     socket.on("userDisconnect", ({ userId }) => {
         onlineUserIds = onlineUserIds?.filter((online) => online !== userId);
-        console.log("userId", userId);
-        console.log("offlineuser", onlineUserIds);
         io.emit("usersOffline", onlineUserIds);
+    });
+    // event for voice calling
+    // Call initiation
+    socket.on("callUser", ({ userToCall, from, signalData }) => {
+        const myFriendId = `user_${userToCall}`;
+        if (myFriendId) {
+            io.to(myFriendId).emit("callIncoming", { from, signal: signalData });
+        }
+    });
+    // Answer the call
+    socket.on("answerCall", ({ to, signal }) => {
+        const answerToFriend = `user_${to}`;
+        if (answerToFriend) {
+            io.to(answerToFriend).emit("callAnswered", signal);
+        }
+    });
+    // ICE candidate exchange
+    socket.on("sendCandidate", ({ to, candidate }) => {
+        const userSocket = `user_${to}`;
+        if (userSocket) {
+            io.to(userSocket).emit("receiveCandidate", candidate);
+        }
     });
     // Handle user disconnecting
     socket.on("disconnect", () => {
