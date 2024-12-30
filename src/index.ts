@@ -103,11 +103,13 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("cutCallToFriend", (id: number) => {
-    console.log('id',id)
-    const friendId = `user_${id}`;
+  socket.on("cutCallToFriend", (data) => {
+    console.log(data);
+    const friendId = `user_${data?.friendId}`;
+    const message = `${data?.frndName} has cut the call`;
+    console.log(message);
     if (friendId) {
-      io.to(friendId).emit("receiveCutCall", {});
+      io.to(friendId).emit("receiveCutCall", message);
     }
   });
 
